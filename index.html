@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" />
+</head>
+<body>
+
+    <!--modal popap for grid blocks-->
+    <div class="modal-win-block" id="modal">
+        <div class="content">
+            <i class="fas fa-times" id="close"></i>
+            <div class="text" id="text"></div>
+        </div>
+    </div>
+
+    <!--s1-->
+    <div class="s1">
+        <!--four blocks in inline-->
+        <div class="grid" id="grid">
+            <div class="grid-item">1</div>
+            <div class="grid-item">2</div>
+            <div class="grid-item">3</div>
+            <div class="grid-item">4</div>
+        </div>
+        <!--checkbox for changes the blocks-->
+        <div class="check">
+            <label for="">Нажми меня</label>
+            <input type="checkbox" id="checkbox">
+        </div>
+        <!--button for add the blocks-->
+        <div class="buttonAdd">
+            <button type="button" id="add">Добавить новый блок</button>
+        </div>
+    </div>
+  
+    <script>
+         
+
+        var checkbox = document.getElementById('checkbox');
+        var grid_block = document.getElementById('grid');
+        var grid_items = grid_block.getElementsByClassName('grid-item');
+        var modal = document.getElementById('modal');
+        var black_block = document.getElementById('black');
+        var text = document.getElementById('text');
+        var butadd = document.getElementById('add');
+        var close = document.getElementById('close');
+
+        /*click (open modal) and for new elements(open)*/
+        for (var i = 0; i < grid_items.length; i++) {
+            grid_items[i].addEventListener('click', function() {
+                var info = this.textContent; 
+                text.textContent = info;
+                modal.classList.add('show');
+            });
+        }
+        function openModal(info) {
+            text.textContent = info;
+            modal.classList.add('show');
+        }
+
+
+        /*close modal*/
+        close.addEventListener('click', function() {
+            modal.classList.add('hide');
+            setTimeout(() => {
+                modal.classList.remove('show', 'hide');
+            }, 300);
+        });
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.classList.add('hide');
+                setTimeout(() => {
+                    modal.classList.remove('show', 'hide');
+                }, 300);
+            }
+        }
+        
+  
+
+        /*checkbox, changes styles*/
+        checkbox.addEventListener('click', function () {
+            for (var i = 0; i < grid_items.length; i++) {
+                if (checkbox.checked == true) {
+                    if (i % 2 === 1) {
+                        grid_items[i].style.setProperty('--bagcolor', 'rgb(141, 141, 141)');
+                        grid_items[i].style.setProperty('--color', 'white');        
+                    } 
+                } else {
+                    grid_items[i].style.setProperty('--bagcolor', '');
+                    grid_items[i].style.setProperty('--color', '');           
+                }    
+            }      
+        });
+        function applyStylesToGridItem(item) {
+            if (checkbox.checked == true) {
+                if (item.index % 2 === 1) {
+                    item.style.setProperty('--bagcolor', 'rgb(141, 141, 141)');
+                    item.style.setProperty('--color', 'white');
+                }
+            } else {
+                item.style.setProperty('--bagcolor', '');
+                item.style.setProperty('--color', '');
+            }
+        }
+        
+
+        /*add new elements*/
+        function addGridItem() {
+            var newItem = document.createElement("div");
+            var newItemIndex = grid_items.length + 1;
+            newItem.textContent = newItemIndex;
+            newItem.index = newItemIndex + 1;
+            newItem.classList.add("grid-item");
+            grid_block.append(newItem);
+            
+            newItem.addEventListener('click', function () {
+                openModal(newItem.textContent);
+            });
+
+            applyStylesToGridItem(newItem);
+        }
+        butadd.addEventListener('click', function() {
+            addGridItem();
+        });
+
+
+ 
+
+       
+    </script>
+
+    
+</body>
+</html>
